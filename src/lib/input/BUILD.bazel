@@ -13,6 +13,7 @@ ng_module(
     "//src/lib/form-field",
     "//src/cdk/coercion",
     "//src/cdk/platform",
+    "//src/cdk/text-field",
   ],
   tsconfig = ":tsconfig-build.json",
 )
