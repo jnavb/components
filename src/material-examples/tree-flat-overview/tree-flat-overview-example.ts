@@ -26,7 +26,7 @@ export class FileFlatNode {
 /**
  * The file structure tree data in string. The data could be parsed into a Json object
  */
-const TREE_DATA = `{"Tina":
+const TREE_DATA = `
   {
     "Documents": {
       "angular": {
@@ -61,7 +61,7 @@ const TREE_DATA = `{"Tina":
         "Calendar": "app",
         "Webstorm": "app"
     }
-}}`;
+}`;
 
 /**
  * File database, it can build a tree structured Json object from string.
@@ -96,7 +96,7 @@ export class FileDatabase {
    * Build the file structure tree. The `value` is the Json object, or a sub-tree of a Json object.
    * The return value is the list of `FileNode`.
    */
-  buildFileTree(value: any, level: number) {
+  buildFileTree(value: any, level: number): FileNode[] {
     let data: any[] = [];
     for (let k in value) {
       let v = value[k];
