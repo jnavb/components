@@ -10,15 +10,16 @@ import {CalendarView, DateAdapter} from '@angular/cdk/datetime';
 })
 export class CdkDatepickerOverviewExample<D> {
   dates: D[] = [];
-  messages: string[] = [];
+  disabled: boolean = false;
 
   constructor(private _dateAdapter: DateAdapter<D>) {
     this.dates.push(this._dateAdapter.addCalendarDays(this._dateAdapter.today(), 5));
     this.dates.push(this._dateAdapter.addCalendarDays(this._dateAdapter.today(), 10));
     this.dates.push(this._dateAdapter.addCalendarDays(this._dateAdapter.today(), 15));
   }
-  _dateSelected() {
-    this.messages.push('Date has changed. ');
+
+  _setDisabled(disabled: boolean) {
+    this.disabled = !disabled;
   }
 }
 
@@ -26,27 +27,39 @@ export class CdkDatepickerOverviewExample<D> {
 @Component({
   selector: 'my-calendar',
   outputs: ['selectedChange'],
-  template: `
-    <div *ngFor="let date of dates">
-      <button (click)="_selected(date)">{{date}}</button>
+  styles: [`
+    .calendar {
+      width: 400px;
+      height: 150px;
+      margin-top: 20px;
+      margin-left: 15px;
+      overflow: auto;
+      background-color: #eee;
+      border-radius: 5px;
+      padding: 10px;
+    }
+  `],
+  template: `      
+    <div class="calendar">
+      <div>Date: {{selected}}</div>
+      <br>
+      <div>Choose an appointment date:</div>
+      <div *ngFor="let date of dates">
+        <button [disabled]="disabled" (click)="_selected(date)">{{date}}</button>
+      </div>
     </div>
-    <div>Date: {{this.selected}}</div>
   `,
   providers: [{provide: CalendarView, useExisting: MyCalendar}],
 })
 export class MyCalendar<D> extends CalendarView<D> {
   @Input() dates: D[];
+  @Input() disabled: boolean;
 
-  activeDate: D;
+  activeDate: D | null = null;
   minDate = null;
   maxDate = null;
   selected: D | null = null;
-  dateFilter = () => true;
-
-  constructor(private _dateAdapter: DateAdapter<D>) {
-    super();
-    this.activeDate = this._dateAdapter.today();
-  }
+  dateFilter: (date: D) => boolean;
 
   _selected(date: D) {
     this.selected = date;
