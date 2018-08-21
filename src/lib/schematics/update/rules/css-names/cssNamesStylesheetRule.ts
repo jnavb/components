@@ -49,7 +49,7 @@ export class Walker extends ComponentWalker {
   visitExternalStylesheet(node: ExternalResource) {
     this._createReplacementsForContent(node, node.getFullText())
       .map(data => createExternalReplacementFailure(node, data.failureMessage,
-        this.getRuleName(), data.replacement))
+          this.getRuleName(), data.replacement))
       .forEach(failure => this.addFailure(failure));
   }
 

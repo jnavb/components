@@ -49,17 +49,17 @@ export class Walker extends ComponentWalker {
   private _createReplacementsForContent(node: ts.Node, templateContent: string) {
     const replacements: {failureMessage: string, replacement: Replacement}[] = [];
 
-    cssNames.forEach(selector => {
-      if (selector.whitelist && !selector.whitelist.html) {
+    cssNames.forEach(name => {
+      if (name.whitelist && !name.whitelist.html) {
         return;
       }
 
-      const failureMessage = `Found deprecated CSS class "${red(selector.replace)}"` +
-        ` which has been renamed to "${green(selector.replaceWith)}"`;
+      const failureMessage = `Found deprecated CSS class "${red(name.replace)}"` +
+        ` which has been renamed to "${green(name.replaceWith)}"`;
 
-      findAllSubstringIndices(templateContent, selector.replace)
+      findAllSubstringIndices(templateContent, name.replace)
         .map(offset => node.getStart() + offset)
-        .map(start => new Replacement(start, selector.replace.length, selector.replaceWith))
+        .map(start => new Replacement(start, name.replace.length, name.replaceWith))
         .forEach(replacement => replacements.push({replacement, failureMessage}));
     });
 
