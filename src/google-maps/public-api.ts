@@ -7,5 +7,6 @@
  */
 
 export {GoogleMap} from './google-map/index';
+export {MapInfoWindow} from './map-info-window/index';
 export {MapMarker} from './map-marker/index';
 export * from './google-maps-module';
