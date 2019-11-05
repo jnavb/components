@@ -40,9 +40,16 @@ export class MatSliderHarness extends ComponentHarness {
     return id !== '' ? id : null;
   }
 
-  /** Gets the current display value of the slider. */
-  async getDisplayValue(): Promise<string> {
-    return (await this._textLabel()).text();
+  /**
+   * Gets the current display value of the slider. Returns null if the thumb
+   * label is disabled.
+   */
+  async getDisplayValue(): Promise<string|null> {
+    const [host, textLabel] = await Promise.all([this.host(), this._textLabel()]);
+    if (await host.hasClass('mat-slider-thumb-label-showing')) {
+      return textLabel.text();
+    }
+    return null;
   }
 
   /** Gets the current percentage value of the slider. */
